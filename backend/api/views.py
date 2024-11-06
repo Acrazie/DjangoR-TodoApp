@@ -33,3 +33,7 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+    
+    # def post(self, request, *args, **kwargs):
+    #     print("Received data:", request.data)
+    #     return super().post(request, *args, **kwargs)

@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../api";
-import { REFRESH_TOKEN, ACCES_TOKEN } from "../constants";
+import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants";
 import { useState, useEffect } from "react";
 
 function ProtectedRoute({ children }) {
@@ -18,7 +18,7 @@ function ProtectedRoute({ children }) {
         refresh: refreshToken,
       });
       if (res.status == 200) {
-        localStorage.setItem(ACCES_TOKEN, res.data.access);
+        localStorage.setItem(ACCESS_TOKEN, res.data.access);
         setIsAuthorized(true);
       }
     } catch (error) {
@@ -27,7 +27,7 @@ function ProtectedRoute({ children }) {
     }
   };
   const auth = async () => {
-    const token = localStorage.getItem(ACCES_TOKEN);
+    const token = localStorage.getItem(ACCESS_TOKEN);
     if (!token) {
       setIsAuthorized(false);
       return;
