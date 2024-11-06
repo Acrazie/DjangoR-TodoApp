@@ -1,5 +1,39 @@
+import { useState, useEffect } from "react";
+import api from "../api";
+
 function Home() {
-    return <div>Home</div>
+  const [notes, setNotes] = useState([]);
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    getNote();
+  }, []);
+
+  const getNotes = () => {
+    api
+      .get("/api/notes/")
+      .then((res) => res.data)
+      .then((data) => {
+        setNotes(data), console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
+
+  const deleteNote = (id) => {
+    api
+      .delete(`/api/notes/delete/${id}/`)
+      .then((res) => {
+        if (res.status === 204) alert("Notes deleted");
+        else alert("Failed to delete note");
+      })
+      .catch((err) => alert(err));
+    getNotes();
+  };
+
+  
+
+  return <div>Home</div>;
 }
 
-export default Home
+export default Home;
