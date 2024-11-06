@@ -4,7 +4,12 @@ from rest_framework import generics
 from .serializer import UserSerializer, NoteSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note
+from rest_framework.response import Response
+from rest_framework import status
+
+
 # Create your views here.
+
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -12,6 +17,7 @@ class NoteListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        print("Authenticated user:", user)
         return Note.objects.filter(author=user)
 
     def perform_create(self, serializer):
@@ -20,10 +26,11 @@ class NoteListCreate(generics.ListCreateAPIView):
         else:
             print(serializer.errors)
 
+
 class NoteDelete(generics.DestroyAPIView):
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         user = self.request.user
         return Note.objects.filter(author=user)
@@ -33,7 +40,7 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
-    
-    # def post(self, request, *args, **kwargs):
-    #     print("Received data:", request.data)
-    #     return super().post(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        print("Received data:", request.data)
+        return super().post(request, *args, **kwargs)
